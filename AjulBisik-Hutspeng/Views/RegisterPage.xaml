@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AjulBisik_Hutspeng.Views.RegisterPage"
+             NavigationPage.HasNavigationBar="False">
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="30" VerticalOptions="Center">
+            <Label Text="Daftar Akun" FontSize="28" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="Buat akun barumu sekarang" FontSize="14" HorizontalOptions="Center" TextColor="Gray" Margin="0,0,0,20"/>
+            
+            <Entry Placeholder="Nama Lengkap" Text="{Binding FullName}" />
+            <Entry Placeholder="Nama Pengguna (huruf kecil &amp; angka)" Text="{Binding Username}" TextTransform="Lowercase" />
+            <Entry Placeholder="Email" Text="{Binding Email}" Keyboard="Email" />
+            
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Placeholder="Kata Sandi" Text="{Binding Password}" IsPassword="{Binding IsPasswordHidden}" Grid.Column="0" />
+                <ImageButton Command="{Binding TogglePasswordCommand}" BackgroundColor="Transparent" Grid.Column="1" WidthRequest="20" HeightRequest="20" Margin="10,5" Aspect="AspectFit">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsPasswordHidden}" Value="True">
+                            <Setter Property="Source" Value="ic_eye_closed.png" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsPasswordHidden}" Value="False">
+                            <Setter Property="Source" Value="ic_eye_open.png" />
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Entry Placeholder="Konfirmasi Kata Sandi" Text="{Binding ConfirmPassword}" IsPassword="{Binding IsConfirmPasswordHidden}" Grid.Column="0" />
+                <ImageButton Command="{Binding ToggleConfirmPasswordCommand}" BackgroundColor="Transparent" Grid.Column="1" WidthRequest="20" HeightRequest="20" Margin="10,5" Aspect="AspectFit">
+                    <ImageButton.Triggers>
+                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsConfirmPasswordHidden}" Value="True">
+                            <Setter Property="Source" Value="ic_eye_closed.png" />
+                        </DataTrigger>
+                        <DataTrigger TargetType="ImageButton" Binding="{Binding IsConfirmPasswordHidden}" Value="False">
+                            <Setter Property="Source" Value="ic_eye_open.png" />
+                        </DataTrigger>
+                    </ImageButton.Triggers>
+                </ImageButton>
+            </Grid>
+            
+            <Button Text="Daftar" Command="{Binding RegisterCommand}" CornerRadius="10" Margin="0,20,0,0"/>
+            
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                <Label Text="Sudah punya akun?" VerticalOptions="Center" />
+                <Button Text="Masuk" Command="{Binding GoToLoginCommand}" BackgroundColor="Transparent" TextColor="Blue" />
+            </HorizontalStackLayout>
+            
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

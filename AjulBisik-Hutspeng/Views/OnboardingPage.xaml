@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:AjulBisik_Hutspeng.ViewModels"
+             x:Class="AjulBisik_Hutspeng.Views.OnboardingPage"
+             NavigationPage.HasNavigationBar="False">
+
+    <Grid>
+        <CarouselView ItemsSource="{Binding Items}" Position="{Binding Position}">
+            <CarouselView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20" Padding="30">
+                        <Image Source="{Binding ImageUrl}" HeightRequest="250" HorizontalOptions="Center" />
+                        <Label Text="{Binding Title}" FontSize="24" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                        <Label Text="{Binding Description}" FontSize="16" HorizontalTextAlignment="Center" TextColor="Gray" />
+                    </StackLayout>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+        <IndicatorView HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,100" IndicatorsShape="Circle" IndicatorColor="LightGray" SelectedIndicatorColor="Black" />
+        
+        <Button Text="{Binding Position, Converter={StaticResource NextButtonTextConverter}}" 
+                Command="{Binding NextCommand}"
+                HorizontalOptions="Center" VerticalOptions="End" Margin="0,0,0,30" WidthRequest="200" CornerRadius="25"/>
+    </Grid>
+
+</ContentPage>

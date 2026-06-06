@@ -1,0 +1,46 @@
+## .NET
+obj/
+bin/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## .NET MAUI
+*.apk
+*.aab
+*.msi
+*.appx
+*.appxbundle
+
+## Visual Studio
+.vs/
+*.sln.ide/
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## Build
+build/
+[Bb]in/
+[Oo]bj/
+*.nupkg
+
+## Logs
+*.log
+android_build_log.txt
+build_log.txt
+
+## NuGet
+packages/
+*.nupkg
+project.lock.json
+project.assets.json
+*.nuget.cache
+
+## macOS
+.DS_Store
+
+## Windows
+Thumbs.db

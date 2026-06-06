@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:AjulBisik_Hutspeng.ViewModels"
+             x:Class="AjulBisik_Hutspeng.Views.HomePage"
+             Title="Beranda">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding LoadMessagesCommand}">
+        <Grid>
+            <CollectionView ItemsSource="{Binding Messages}" SelectionMode="Single" SelectedItem="{Binding SelectedMessage}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="15,8" Padding="15" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="15" />
+                            </Border.StrokeShape>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,4" Radius="10" Opacity="0.1" />
+                            </Border.Shadow>
+                            
+                            <Grid ColumnDefinitions="50,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="15">
+                                <Border Grid.RowSpan="3" Grid.Column="0" StrokeShape="RoundRectangle 25" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="Start" Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimarySoft}}" StrokeThickness="2">
+                                    <Image Source="{Binding Sender.ProfilePhotoData, Converter={StaticResource ByteArrayToImageSourceConverter}}" 
+                                           Aspect="AspectFill" />
+                                </Border>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Sender.FullName}" FontAttributes="Bold" FontSize="16" TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimarySoft}}" />
+                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Sender.Username}" TextColor="Gray" FontSize="12" Margin="0,0,0,10" />
+                                
+                                <HorizontalStackLayout Grid.Row="2" Grid.Column="1" Spacing="5">
+                                    <Label Text="⚫" TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimarySoft}}" IsVisible="{Binding IsRead, Converter={StaticResource InvertedBoolConverter}}" FontSize="10" VerticalOptions="Center" />
+                                    <Label Text="{Binding Content}" FontSize="15" LineHeight="1.4" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" LineBreakMode="TailTruncation" MaxLines="1" />
+                                </HorizontalStackLayout>
+                                
+                                <!-- Tombol Hapus -->
+                                <ImageButton Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" 
+                                             Source="ic_check_read.png" 
+                                             WidthRequest="18" HeightRequest="18" 
+                                             VerticalOptions="Center" HorizontalOptions="End"
+                                             BackgroundColor="Transparent"
+                                             Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomeViewModel}}, Path=DeleteMessageCommand}"
+                                             CommandParameter="{Binding .}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <ContentView IsVisible="{Binding IsEmpty}">
+                        <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                            <Label Text="Belum ada pesan masuk." HorizontalOptions="Center" TextColor="Gray" />
+                        </StackLayout>
+                    </ContentView>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+    </RefreshView>
+</ContentPage>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="AjulBisik_Hutspeng.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:AjulBisik_Hutspeng"
+    xmlns:views="clr-namespace:AjulBisik_Hutspeng.Views"
+    Shell.FlyoutBehavior="Disabled">
+
+    <!-- Auth flow pages that shouldn't be in the bottom tab bar -->
+    <ShellContent
+        Title="Mulai"
+        ContentTemplate="{DataTemplate views:OnboardingPage}"
+        Route="Onboarding" />
+
+    <ShellContent
+        Title="Masuk"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="Login" />
+
+    <ShellContent
+        Title="Daftar"
+        ContentTemplate="{DataTemplate views:RegisterPage}"
+        Route="Register" />
+
+    <!-- Main App Flow with Bottom Tabs -->
+    <TabBar Route="HomeTabs">
+        <Tab Title="Beranda" Route="Home" Icon="ic_home.png">
+            <ShellContent ContentTemplate="{DataTemplate views:HomePage}" />
+        </Tab>
+        <Tab Title="Kirim Pesan" Route="SendMessage" Icon="ic_send.png">
+            <ShellContent ContentTemplate="{DataTemplate views:SendMessagePage}" />
+        </Tab>
+        <Tab Title="Akun" Route="Account" Icon="ic_account.png">
+            <ShellContent ContentTemplate="{DataTemplate views:AccountPage}" />
+        </Tab>
+    </TabBar>
+
+</Shell>

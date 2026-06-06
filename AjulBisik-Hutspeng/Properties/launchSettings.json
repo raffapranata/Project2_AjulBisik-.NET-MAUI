@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "Windows Machine": {
+      "commandName": "Project",
+      "nativeDebugging": false,
+      "environmentVariables": {
+        "SMTP_HOST": "smtp.gmail.com",
+        "SMTP_PORT": "587",
+        "SMTP_USER": "masukkan email disini",
+        "SMTP_PASS": "masukkan kunci sandi aplikasi google nya disini (bukan kata sandi)"
+      }
+    }
+  }
+}

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AjulBisik_Hutspeng.Views.AccountPage"
+             Title="Akun">
+
+    <Grid RowDefinitions="*" Padding="0">
+
+        <!-- MAIN MENU (CARDS) -->
+        <ScrollView IsVisible="{Binding IsMenuVisible}">
+            <VerticalStackLayout Padding="20" Spacing="15">
+                
+                <Label Text="Menu Akun" FontSize="22" FontAttributes="Bold" Margin="0,0,0,10" />
+
+                <!-- Card Pengaturan Akun -->
+                <Border Padding="0" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowSettingsCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="20" ColumnSpacing="15">
+                        <Label Grid.Column="0" Text="👤" FontSize="24" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Pengaturan Akun" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Foto profil, nama, dan tampilan" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="❯" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <!-- Card Keamanan Akun -->
+                <Border Padding="0" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="15" />
+                    </Border.StrokeShape>
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowSecurityCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="20" ColumnSpacing="15">
+                        <Label Grid.Column="0" Text="🔒" FontSize="24" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="Keamanan Akun" FontAttributes="Bold" FontSize="16" />
+                            <Label Text="Ganti kata sandi dan hapus akun" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="❯" TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <BoxView HeightRequest="1" Color="LightGray" Margin="0,10" />
+
+                <Button Text="Keluar" 
+                        Command="{Binding LogoutCommand}" 
+                        BackgroundColor="Transparent" 
+                        TextColor="Red" 
+                        BorderColor="Red" 
+                        BorderWidth="1" 
+                        CornerRadius="10" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- SUB-PAGE CONTENT (PENGATURAN / KEAMANAN) -->
+        <ScrollView IsVisible="{Binding IsMenuVisible, Converter={StaticResource InvertedBoolConverter}}">
+            <VerticalStackLayout Padding="20" Spacing="20">
+                
+                <!-- Back Button -->
+                <Button Text="← Kembali ke Menu" 
+                        Command="{Binding BackToMenuCommand}" 
+                        HorizontalOptions="Start" 
+                        BackgroundColor="Transparent" 
+                        TextColor="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource PrimarySoft}}"
+                        Padding="0"
+                        Margin="0,0,0,10" />
+
+                <!-- PAGE 1: PENGATURAN AKUN -->
+                <VerticalStackLayout Spacing="20" IsVisible="{Binding IsSettingsTab}">
+                    <Label Text="Pengaturan Akun" FontSize="22" FontAttributes="Bold" />
+                    
+                    <!-- Profile Photo -->
+                    <StackLayout HorizontalOptions="Center" Spacing="10">
+                        <Border StrokeShape="RoundRectangle 50" WidthRequest="100" HeightRequest="100" Stroke="LightGray" StrokeThickness="2">
+                            <Image Source="{Binding ProfilePhotoSource}" Aspect="AspectFill" />
+                        </Border>
+                        <Button Text="Ganti Foto" Command="{Binding ChangePhotoCommand}" BackgroundColor="Transparent" TextColor="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource PrimarySoft}}" />
+                    </StackLayout>
+
+                    <Label Text="Informasi Profil" FontSize="18" FontAttributes="Bold" Margin="0,10,0,0" />
+                    <Entry Placeholder="Nama Lengkap" Text="{Binding CurrentUser.FullName}" />
+                    <Entry Placeholder="Nama Pengguna" Text="{Binding CurrentUser.Username}" TextTransform="Lowercase" />
+                    <Entry Placeholder="Email" Text="{Binding CurrentUser.Email}" Keyboard="Email" />
+                    <Button Text="Simpan Profil" Command="{Binding UpdateProfileCommand}" CornerRadius="10" />
+
+                    <BoxView HeightRequest="1" Color="LightGray" Margin="0,10" />
+
+                    <Label Text="Pengaturan Tampilan" FontSize="18" FontAttributes="Bold" />
+                    <Picker Title="Pilih Tema" SelectedIndex="{Binding SelectedThemeIndex}">
+                        <Picker.Items>
+                            <x:String>Mengikuti Sistem</x:String>
+                            <x:String>Mode Terang</x:String>
+                            <x:String>Mode Gelap</x:String>
+                        </Picker.Items>
+                    </Picker>
+                </VerticalStackLayout>
+
+                <!-- PAGE 2: KEAMANAN AKUN -->
+                <VerticalStackLayout Spacing="20" IsVisible="{Binding IsSettingsTab, Converter={StaticResource InvertedBoolConverter}}">
+                    <Label Text="Keamanan Akun" FontSize="22" FontAttributes="Bold" />
+                    
+                    <Label Text="Ganti Kata Sandi" FontSize="18" FontAttributes="Bold" />
+            
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Placeholder="Kata Sandi Lama" Text="{Binding OldPassword}" IsPassword="{Binding IsOldPasswordHidden}" Grid.Column="0" />
+                        <ImageButton Command="{Binding ToggleOldPasswordCommand}" BackgroundColor="Transparent" Grid.Column="1" WidthRequest="20" HeightRequest="20" Margin="10,5" Aspect="AspectFit">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsOldPasswordHidden}" Value="True">
+                                    <Setter Property="Source" Value="ic_eye_closed.png" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsOldPasswordHidden}" Value="False">
+                                    <Setter Property="Source" Value="ic_eye_open.png" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </Grid>
+            
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Placeholder="Kata Sandi Baru" Text="{Binding NewPassword}" IsPassword="{Binding IsNewPasswordHidden}" Grid.Column="0" />
+                        <ImageButton Command="{Binding ToggleNewPasswordCommand}" BackgroundColor="Transparent" Grid.Column="1" WidthRequest="20" HeightRequest="20" Margin="10,5" Aspect="AspectFit">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsNewPasswordHidden}" Value="True">
+                                    <Setter Property="Source" Value="ic_eye_closed.png" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsNewPasswordHidden}" Value="False">
+                                    <Setter Property="Source" Value="ic_eye_open.png" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Placeholder="Konfirmasi Kata Sandi Baru" Text="{Binding ConfirmNewPassword}" IsPassword="{Binding IsConfirmNewPasswordHidden}" Grid.Column="0" />
+                        <ImageButton Command="{Binding ToggleConfirmNewPasswordCommand}" BackgroundColor="Transparent" Grid.Column="1" WidthRequest="20" HeightRequest="20" Margin="10,5" Aspect="AspectFit">
+                            <ImageButton.Triggers>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsConfirmNewPasswordHidden}" Value="True">
+                                    <Setter Property="Source" Value="ic_eye_closed.png" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="ImageButton" Binding="{Binding IsConfirmNewPasswordHidden}" Value="False">
+                                    <Setter Property="Source" Value="ic_eye_open.png" />
+                                </DataTrigger>
+                            </ImageButton.Triggers>
+                        </ImageButton>
+                    </Grid>
+            
+                    <Button Text="Ubah Kata Sandi" Command="{Binding ChangePasswordCommand}" CornerRadius="10" />
+
+                    <BoxView HeightRequest="1" Color="LightGray" Margin="0,10" />
+
+                    <Label Text="Hapus Akun" FontSize="18" FontAttributes="Bold" TextColor="Red" />
+                    <Label Text="Ketik 'hapus_akun' di bawah ini untuk menghapus akun secara permanen." FontSize="12" TextColor="Gray" />
+                    <Entry Placeholder="Ketik hapus_akun" Text="{Binding DeleteConfirmation}" TextColor="Red" />
+                    <Button Text="Hapus Akun" Command="{Binding DeleteAccountCommand}" BackgroundColor="Red" CornerRadius="10" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:AjulBisik_Hutspeng.ViewModels"
+             x:Class="AjulBisik_Hutspeng.Views.SendMessagePage"
+             Title="Kirim Pesan">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" Padding="20">
+
+            <StackLayout IsVisible="{Binding SelectedUser, Converter={StaticResource NullToBoolConverter}, ConverterParameter=Invert}">
+                <SearchBar Placeholder="Cari nama pengguna..." Text="{Binding SearchQuery}" SearchCommand="{Binding SearchUsersCommand}" />
+                <CollectionView ItemsSource="{Binding SearchResults}" MaximumHeightRequest="250" Margin="0,5,0,0">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,2" Padding="10" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="10" />
+                                </Border.StrokeShape>
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SendMessageViewModel}}, Path=SelectUserCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid ColumnDefinitions="40, *" ColumnSpacing="15">
+                                    <Border Grid.Column="0" StrokeShape="RoundRectangle 20" WidthRequest="40" HeightRequest="40" Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimarySoft}}" StrokeThickness="1">
+                                        <Image Source="{Binding ProfilePhotoData, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill" />
+                                    </Border>
+                                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                        <Label Text="{Binding FullName}" FontAttributes="Bold" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                        <Label Text="{Binding Username}" FontSize="12" TextColor="Gray" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding SelectedUser, Converter={StaticResource NullToBoolConverter}}">
+                <Label Text="Kirim ke:" TextColor="Gray" Margin="0,0,0,5" />
+                <Border Padding="10" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <Grid ColumnDefinitions="40, *, Auto" ColumnSpacing="15">
+                        <Border Grid.Column="0" StrokeShape="RoundRectangle 20" WidthRequest="40" HeightRequest="40" Stroke="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimarySoft}}" StrokeThickness="1">
+                            <Image Source="{Binding SelectedUser.ProfilePhotoData, Converter={StaticResource ByteArrayToImageSourceConverter}}" Aspect="AspectFill" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                            <Label Text="{Binding SelectedUser.FullName}" FontAttributes="Bold" FontSize="14" TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Label Text="{Binding SelectedUser.Username}" FontSize="12" TextColor="Gray" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="2" Text="✖" Command="{Binding ClearSelectedUserCommand}" BackgroundColor="Transparent" TextColor="Red" FontSize="18" VerticalOptions="Center" WidthRequest="40" HeightRequest="40" Padding="0" />
+                    </Grid>
+                </Border>
+            </StackLayout>
+
+            <Border Margin="0,5" Padding="15" Stroke="Transparent" BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray950}}">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+                
+                <Editor Placeholder="Tulis pesanmu di sini..." Text="{Binding MessageContent}" HeightRequest="150" AutoSize="TextChanges" BackgroundColor="Transparent" />
+            </Border>
+
+            <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                <Label Text="Kirim sebagai anonim" VerticalOptions="Center" />
+                <Switch IsToggled="{Binding IsAnonymous}" VerticalOptions="Center" />
+            </HorizontalStackLayout>
+
+            <Button Text="Kirim" Command="{Binding SendMessageCommand}" CornerRadius="10" Margin="0,20,0,0" />
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" HorizontalOptions="Center" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
